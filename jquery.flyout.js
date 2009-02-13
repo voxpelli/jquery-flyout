@@ -138,6 +138,7 @@ jQuery.fn.extend({flyout : function (options) {
 			subType = 'img',
 			putAway,
 			flyOut,
+			closer,
 			o = jQuery.extend({
 				outSpeed : 1000,
 				inSpeed : 500,
@@ -289,15 +290,15 @@ jQuery.fn.extend({flyout : function (options) {
 					shown = it;
 					$holder.addClass(o.shownClass);
 					animating = false;
-					jQuery('#' + o.loader + ' ' + subType).click(function () {
-						putAway(null);
-					});
+					jQuery(document).click(closer);
 				});
 			});
 			bigimg.src = $holder.attr('href');
 		};
 
 		putAway = function (next) {
+			jQuery(document).unbind('click', closer);
+
 			// for future development:
 			if (animating === true || shown === false) {
 				return false;
@@ -328,6 +329,14 @@ jQuery.fn.extend({flyout : function (options) {
 				});
 		};
 
+		closer = function () {
+	    putAway(null);
+		};
+
 		return this;	// never break the chain
 	}
+});
+
+jQuery(function () {
+	jQuery("[rel='original']").flyout().append(jQuery('<span></span>').addClass('zoomable').text(Drupal.t('Zoom')));
 });
