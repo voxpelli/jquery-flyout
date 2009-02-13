@@ -193,16 +193,16 @@ $.fn.extend({flyout : function (options) {
 			th = (o.startHeight > 0 ? o.startHeight : $thumb.height());
 			tw = (o.startWidth > 0 ? o.startWidth : $thumb.width());
 
-			$('<div></div>').attr('id', o.loader)
-							.appendTo('body')
-							.css({'position': 'absolute',
-								'top': tloc.top,
-								'left': tloc.left,
-								'height': th,
-								'width': tw,
-								'opacity': 0.5,
-								'display': 'block',
-								'z-index': o.loaderZIndex});
+			$('<div></div>').attr('id', o.loader).appendTo('body').css({
+				'position': 'absolute',
+				'top': tloc.top,
+				'left': tloc.left,
+				'height': th,
+				'width': tw,
+				'opacity': 0.5,
+				'display': 'block',
+				'z-index': o.loaderZIndex
+			});
 
 			if (o.loadingSrc) {
 				$('#' + o.loader).append($('<img/>').attr('src', o.loadingSrc).load(function () {
@@ -214,15 +214,15 @@ $.fn.extend({flyout : function (options) {
 				}));
 			}
 			else {
-				$('#' + o.loader).css('background-color', '#000')
-								.append($('<span></span>')
-										  	.text(o.loadingText)
-											.css({'position': 'relative',
-												 'top': '2px',
-												 'left': '2px',
-												 'color': '#FFF',
-												 'font-size': '9px'})
-									 	);
+				$('#' + o.loader).css('background-color', '#000').append(
+					$('<span></span>').text(o.loadingText).css({
+						'position': 'relative',
+						'top': '2px',
+						'left': '2px',
+						'color': '#FFF',
+						'font-size': '9px'
+					})
+				);
 			}
 
 			$(bigimg).load(function () {
