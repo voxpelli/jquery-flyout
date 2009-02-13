@@ -124,9 +124,9 @@
  * @author Jolyon Terwilliger (jolyon@nixbox.com)
  */
 
-/*global $, jQuery */
+/*global Drupal, jQuery */
 
-$.fn.extend({flyout : function (options) {
+jQuery.fn.extend({flyout : function (options) {
 		var shown = false,
 			animating = false,
 			$holder,
@@ -148,8 +148,8 @@ $.fn.extend({flyout : function (options) {
 				loaderZIndex: 500,
 				widthMargin: 40,
 				heightMargin: 40,
-				loadingText : "Loading...",
-				closeTip : " - Click here to close",
+				loadingText : Drupal.t('Loading...'),
+				closeTip : Drupal.t(' - Click here to close'),
 				destPadding: 20,
 				startOffsetX: 0,
 				startOffsetY: 0,
@@ -182,31 +182,31 @@ $.fn.extend({flyout : function (options) {
 
 			animating = true;
 
-			$holder = $(it);
-			$thumb = $('img', it);
+			$holder = jQuery(it);
+			$thumb = jQuery('img', it);
 			bigimg = new Image();
-			sL = $(window).scrollLeft();
-			sT = $(window).scrollTop();
+			sL = jQuery(window).scrollLeft();
+			sT = jQuery(window).scrollTop();
 			tloc = $thumb.offset();
 			tloc.left += o.startOffsetX;
 			tloc.top += o.startOffsetY;
 			th = (o.startHeight > 0 ? o.startHeight : $thumb.height());
 			tw = (o.startWidth > 0 ? o.startWidth : $thumb.width());
 
-			$('<div></div>').attr('id', o.loader)
-							.appendTo('body')
-							.css({'position': 'absolute',
-								'top': tloc.top,
-								'left': tloc.left,
-								'height': th,
-								'width': tw,
-								'opacity': 0.5,
-								'display': 'block',
-								'z-index': o.loaderZIndex});
+			jQuery('<div></div>').attr('id', o.loader).appendTo('body').css({
+				'position': 'absolute',
+				'top': tloc.top,
+				'left': tloc.left,
+				'height': th,
+				'width': tw,
+				'opacity': 0.5,
+				'display': 'block',
+				'z-index': o.loaderZIndex
+			});
 
 			if (o.loadingSrc) {
-				$('#' + o.loader).append($('<img/>').attr('src', o.loadingSrc).load(function () {
-					$(this).attr('alt', o.loadingText).css({
+				jQuery('#' + o.loader).append(jQuery('<img/>').attr('src', o.loadingSrc).load(function () {
+					jQuery(this).attr('alt', o.loadingText).css({
 						'position': 'relative',
 						'top': th / 2 - (this.height / 2),
 						'left': tw / 2 - (this.width / 2)
@@ -214,35 +214,33 @@ $.fn.extend({flyout : function (options) {
 				}));
 			}
 			else {
-				$('#' + o.loader).css('background-color', '#000')
-								.append($('<span></span>')
-										  	.text(o.loadingText)
-											.css({'position': 'relative',
-												 'top': '2px',
-												 'left': '2px',
-												 'color': '#FFF',
-												 'font-size': '9px'})
-									 	);
+				jQuery('#' + o.loader).css('background-color', '#000').append(jQuery('<span></span>').text(o.loadingText).css({
+					'position': 'relative',
+					'top': '2px',
+					'left': '2px',
+					'color': '#FFF',
+					'font-size': '9px'
+				}));
 			}
 
-			$(bigimg).load(function () {
+			jQuery(bigimg).load(function () {
 				var imgtag, $dest, max_x, max_y, wh, width, height, x_dim, y_dim, dw, dh, dPos, dl, dt;
-				imgtag = $('<img/>').attr('src', $holder.attr('href')).attr('title', $thumb.attr('title') + o.closeTip).attr('alt', $thumb.attr('alt') + o.closeTip).height(th).width(tw);
+				imgtag = jQuery('<img/>').attr('src', $holder.attr('href')).attr('title', $thumb.attr('title') + o.closeTip).attr('alt', $thumb.attr('alt') + o.closeTip).height(th).width(tw);
 
 				o.flyOutStart.call(it);
 
 				if (o.destElement) {
-					$dest = $(o.destElement);
+					$dest = jQuery(o.destElement);
 					max_x = $dest.innerWidth() - (o.destPadding * 2);
 					max_y = $dest.innerHeight() - (o.destPadding * 2);
 				}
 				else {
-					max_x = $(window).width() - o.widthMargin;
-					if ($.browser.opera) {
+					max_x = jQuery(window).width() - o.widthMargin;
+					if (jQuery.browser.opera) {
 						wh = document.getElementsByTagName('html')[0].clientHeight;
 					}
 					else {
-						wh = $(window).height();
+						wh = jQuery(window).height();
 					}
 					max_y = wh - o.heightMargin;
 				}
@@ -274,24 +272,24 @@ $.fn.extend({flyout : function (options) {
 					dt = Math.round(($dest.outerHeight() / 2) - (dh / 2) + dPos.top);
 				}
 				else {
-					dl = Math.round(($(window).width() / 2) - (dw / 2) + sL);
-					if ($.browser.opera) {
+					dl = Math.round((jQuery(window).width() / 2) - (dw / 2) + sL);
+					if (jQuery.browser.opera) {
 						wh = document.getElementsByTagName('html')[0].clientHeight;
 					}
 					else {
-						wh = $(window).height();
+						wh = jQuery(window).height();
 					}
 					dt = Math.round((wh / 2) - (dh / 2) + sT);
 				}
 
-				$('#' + o.loader).empty().css('opacity', 1).append(imgtag).width('auto').height('auto').animate({top: dt, left: dl}, {duration: o.outSpeed, queue: false, easing: o.outEase});
-				$('#' + o.loader + ' ' + subType).animate({height: dh, width: dw}, o.outSpeed, o.outEase,
+				jQuery('#' + o.loader).empty().css('opacity', 1).append(imgtag).width('auto').height('auto').animate({top: dt, left: dl}, {duration: o.outSpeed, queue: false, easing: o.outEase});
+				jQuery('#' + o.loader + ' ' + subType).animate({height: dh, width: dw}, o.outSpeed, o.outEase,
 				function () {
 					o.flyOutFinish.call(it);
 					shown = it;
 					$holder.addClass(o.shownClass);
 					animating = false;
-					$('#' + o.loader + ' ' + subType).click(function () {
+					jQuery('#' + o.loader + ' ' + subType).click(function () {
 						putAway(null);
 					});
 				});
@@ -313,11 +311,11 @@ $.fn.extend({flyout : function (options) {
 			tloc.left += o.startOffsetX;
 			tloc.top += o.startOffsetY;
 
-			$('#' + o.loader).animate({top: tloc.top, left: tloc.left}, {duration: o.inSpeed, queue: false, easing: o.inEase});
-			$('#' + o.loader + ' ' + subType).animate({height: th, width: tw},
+			jQuery('#' + o.loader).animate({top: tloc.top, left: tloc.left}, {duration: o.inSpeed, queue: false, easing: o.inEase});
+			jQuery('#' + o.loader + ' ' + subType).animate({height: th, width: tw},
 				o.inSpeed, o.inEase,
 				function () {
-					$('#' + o.loader).css('display', 'none').remove();
+					jQuery('#' + o.loader).css('display', 'none').remove();
 					o.putAwayFinish.call(shown);
 					animating = false;
 					bigimg = null;
